@@ -4,20 +4,25 @@
 基于flask封装的的工程，可直接编写业务
 
 #### 软件架构
-软件架构说明
 
+按文件夹阐述
+1. app为flask app定义模块
+2. controller为具体业务控制器定义模块
+3. database为数据库操作模块
+4. error_code为错误码定义模块
+5. middleware为中间件操作定义模块（缓存，消息队列等）
+6. response为统一的返回值定义模块
+7. setting为配置项定义模块，包括常量和配置项
+8. utils为常用工具定义模块，token解析，密码加解密等
+9. view为blueprint定义模块
 
 #### 安装教程
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+1.  python ./run_service.py
 
 #### 使用说明
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+1.  根据实际需求，对应相应模块，编写业务代码
 
 #### 参与贡献
 
