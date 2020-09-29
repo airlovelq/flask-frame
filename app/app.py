@@ -20,14 +20,22 @@ import traceback
 
 from flask import Flask, g, jsonify
 from flask_cors import CORS
+from flasgger import Swagger
 
 from error_code import BaseException, SystemInternalError
 
 from view import test_view
+from response import ResultSuccess
 
 def create_app():
     app = Flask(__name__)
 
+    swagger_config = Swagger.DEFAULT_CONFIG
+    swagger_config['title'] = 'test'    # 配置大标题
+    swagger_config['description'] = 'test'    # 配置公共描述内容
+    swagger_config['host'] = 'localhost:1000'    # 请求域名
+    swag = Swagger(app, config=swagger_config)
+    
     app.register_blueprint(test_view, url_prefix='/test')
 
     CORS(app)
@@ -48,16 +56,18 @@ def create_app():
     def handle_internal_error(error):
         return jsonify(dict(SystemInternalError())), 500
 
-    @app.after_request
-    def after_request_handler(resp):
-        if resp.is_json:
-            data = resp.get_json()
-            if isinstance(data, dict):
-                if 'error_code' and 'message' and 'success' in data:
-                    return resp
-            result = ResultSuccess(data)
-            return jsonify(dict(result))
-        else:
-            return resp
+    # @app.after_request
+    # def after_request_handler(resp):
+    #     if resp.is_json:
+    #         data = resp.get_json()
+    #         if isinstance(data, dict):
+    #             if 'error_code' and 'message' and 'success' in data:
+    #                 return resp
+    #             if 'swagger' in data:
+    #                 return resp
+    #         result = ResultSuccess(data)
+    #         return jsonify(dict(result))
+    #     else:
+    #         return resp
 
     return app
